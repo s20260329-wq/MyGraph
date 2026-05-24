@@ -100,3 +100,32 @@ void DN(MGraph* G) {
 		G->arcs[V2][V1].adj = 1;
 	}
 }
+//广度优先搜索
+void BFS(MGraph* G) {
+	//创建一个队列
+	std::queue<int> q;
+	int i;
+	int j,u;
+	//第一层循环控制每一个连通分量
+	for ( i = 0; i < G->vexnum; i++) {
+		//判断这个顶点连通的图有没有被遍历过
+		if (!visited[i]) {
+			printf("%d ", G->vex[i]);
+			visited[i] = 1;
+			q.push(G->vex[i]);
+			//第二层循环控制队列
+			while (!q.empty()) {
+				u = Location(G, q.front());
+				q.pop();
+				//第三层循环控制二维矩阵的一层并不是遍历完
+				for (j = FirstAdjVex(G, u); j >= 0; j = NextAdjVex(G, u, j)) {
+					if (!visited[j]) {
+						printf("%d ", G->vex[j]);
+						visited[j] = 1;
+						q.push(G->vex[j]);
+					}
+				}
+			}
+		}
+	}
+}
