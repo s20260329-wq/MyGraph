@@ -129,3 +129,38 @@ void BFS(MGraph* G) {
 		}
 	}
 }
+//这个代码不适配上面图的建立,聚焦于单个函数
+//最小生成树
+int prim(MGraph* G) {
+	
+	int v = G->vexnum+1;
+	//建立一个min数组里面存最大数
+	std::vector<int> minDist(v, INT_MAX);
+	std::vector<bool> isInTree(v ,false);
+	//外循环循环n-1次
+	for (int i = 1; i <= G->vexnum; i++) {
+		//先设立最小值
+		int min = INT_MAX;
+		int cur=1;
+		//第二层循环,找到数组内最小值
+		for (int j = 1; j <v; j++) {
+			if (!isInTree[j]&&minDist[j] < min) {
+				min = minDist[j];
+				cur = j;
+			}
+		}
+		//加入树
+		isInTree[cur]=true;
+		//第三个循环更改数组内到最小生成树的距离
+		for (int k = 1; k <=G->vexnum; k++) {
+			if (!isInTree[k] && G->arcs[cur][k].weight < minDist[k]) {
+				minDist[k] = G->arcs[cur][k].weight;
+			}
+		}
+	}
+	int sum = 0;
+	for (int i = 2; i < v; i++) {
+		sum += minDist[i];
+	}
+	return sum;
+}
